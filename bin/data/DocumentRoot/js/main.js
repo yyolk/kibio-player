@@ -158,7 +158,11 @@ function addToPlaylist(uuid){
 
 
 
-  $("#sortablePlaylist").append($.mustache($("#playlistElement").html(), uuid));
+  $("#sortablePlaylist").append($.mustache($("#playlistElement").html(), uuid, {
+    maskStackedIcon : $("#maskStackedIcon").html(),
+    warpStackedIcon : $("#warpStackedIcon").html(),
+    timeStackedIcon : $("#timeStackedIcon").html()
+  }));
   updateInteractions();
 }
 
