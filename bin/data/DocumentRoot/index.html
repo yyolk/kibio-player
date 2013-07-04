@@ -182,7 +182,7 @@
         #mediaLibraryContainer{
           height:500px;
           max-height:500px;
-          overflow: hidden;
+          overflow:scroll;
         }
         #navInactive{
           position:fixed;
@@ -190,6 +190,16 @@
         }
         #navActive{
           position:fixed;
+        }
+
+        #mediaLibrary .icon{
+          font-size:10px;
+        }
+        #mediaLibary tr td{
+          font-size:9px;
+        }
+        #main{
+          margin-top:80px;
         }
     </style>
     <link href='common/css/bootstrap-responsive.css' rel='stylesheet'>
@@ -232,9 +242,9 @@
         </div>
       </div>
     </div>
-    <div class="container-fluid">
+    <div id="main" class="container-fluid">
       <div class="row-fluid">
-       <div class='hero-unit span8 offset2'>
+       <div class='span10 offset1'>
           <!-- Media Library -->
           <div class='accordion' id='mediaLibraryAccordion'>
             <div class='accordion-group'>
@@ -245,8 +255,9 @@
              </div>
              <div class='accordion-body collapse in' id='mediaLibraryContainer'>
                <div class='accordion-inner'>                  
-                 <div id="mediaLibrary">
-                 </div>
+                <table id="mediaLibrary" class="table">
+
+                </table>
                </div>
              </div>
            </div>
@@ -379,42 +390,43 @@
       </li>
     </script>
     <script type="text/x-mustache" id="bootstrapPlaylist">
-      <div id="mediaLibrary-{{UUID}}" class="row-fluid">
-        <div class="span1">
+        <tr id="mediaLibrary-{{UUID}}">
+        <td>
           {{#fileHealth}}
             {{> fileHealthIndicator}}
           {{/fileHealth}}
-        </div>
-        <div class="offset1 span4">
+        </td>
+        
+        <td>
           {{fileName}}
-        </div>
-        <div class="offset1 span1">
+        </td>
+        <td>
           {{type}}
-        </div>
-        <div class="span1">
+        </td>
+        <td>
           {{fileSize}}
-        </div>
-        <div class="span1">
+        </td>
+        <td>
           {{duration}}
-        </div>
-        <div class="span1 offset1">
+        </td>
+        <td>
           <a onclick="addToPlaylist({ UUID: '{{UUID}}', fileName: '{{fileName}}', fileSize: '{{fileSize}}', numFrames: '{{numFrames}}', duration: '{{duration}}', fileExtension: '{{fileExtension}}' })">
             <i class="icon-plus icon-large"></i>
           </a>
-        </div>
-      </div>
+        </td>
+        </tr>
     </script>
 
     <!-- fileHealthIndicator.mustache -->
     <script type="text/template" id="fileHealthIndicator">
       {{#fileOk}}
-        <span class="badge badge-success">
-          <i class="icon-ok icon-large" title="Okay"></i>
+        <span class="label label-success">
+          <i class="icon-ok icon" title="Okay"></i>
         </span>
       {{/fileOk}}
       {{#fileNotOk}}
-        <span class="badge badge-important">
-          <i class="icon-frown icon-large" title="Not OK"></i>
+        <span class="label label-important">
+          <i class="icon-frown icon" title="Not OK"></i>
         </span>
       {{/fileNotOk}}
     </script>
