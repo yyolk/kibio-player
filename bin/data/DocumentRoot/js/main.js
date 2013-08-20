@@ -143,7 +143,7 @@ function drawEntries(rawJSON){
     //rawJSON.assets[index].name = unescape(rawJSON.assets[index].URI.match(/([^\/]+)(?=\.\w+$)/)[0]);
     
 
-    $("#mediaLibrary").append($.mustache($("#bootstrapPlaylist").html(), rawJSON.assets[index], {fileHealthIndicator: $("#fileHealthIndicator").html()}));
+    $("#mediaLibraryList").append($.mustache($("#bootstrapPlaylist").html(), rawJSON.assets[index], {fileHealthIndicator: $("#fileHealthIndicator").html()}));
   });
 
 

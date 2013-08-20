@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <title>kibio</title>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <meta content='' name='description'>
+    <meta content='' name='author'>
+    <!-- Le styles -->
+    <link href='common/css/bootstrap.css' rel='stylesheet'>
+    <link rel="stylesheet" href="common/css/font-awesome.min.css">
+    
+    <link rel="stylesheet" href="./unmerged.css">
+
+    <link href='common/css/bootstrap-responsive.css' rel='stylesheet'>
+    <link href='common/css/custom-theme/jquery-ui-1.10.3.custom.css' rel='stylesheet'>
+    <link rel="icon" href="./common/img/favicon.ico" type="image/x-icon">
+  </head>
+  <body>
+    <div id="navInactive" class="navbar navbar-fixed-top">
+      <div class="navbar-inner" style="background-color:transparent;border:none; /* background color will be black for all browsers */ background-image: none; background-repeat: no-repeat; box-shadow: none;">
+        <div class="container-fluid">
+          <div class="brand">
+            <img src="./common/img/kibio.mark-white.png">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="navActive" class="navbar fade navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button class="btn btn-navbar" data-target=".nav-collapse" data-toggle="collapse" type="button">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="/"><img src="./common/img/kibio.mark-white.png"></a>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="active">
+                <a href="#">Player</a>
+              </li>
+              <li>
+                <a href="#faq">FAQ</a>
+              </li>
+              <li>
+                <a href="#help">Help</a>
+              </li>
+            </ul>
+          </div>
+          <!-- /.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Media Library -->
+    <div id="mediaLibrary" class="span1" style="position:fixed; float:left;">
+        <table id="mediaLibraryList" class="table">
+          <!-- filled by kibio-player -->
+        </table>
+    </div>
+    <!-- End Media Library -->
+
+    <div id="main" class="container">
+      <div class="row">
+      <!-- start #control -->
+      <div id="control" class="offset3 span9">
+
+        <!-- Control Box -->
+        <div class='row'>
+          <div class="hero-unit span6">
+            <div class="span2">
+              <a class="btn" href="" id="video-control-play">
+                <i class="icon-play icon-2x"></i>
+              </a>
+              <a class="btn" href="" id="video-control-pause">
+                <i class="icon-pause icon-2x"></i>
+              </a>
+              <a class="btn" href="" id="video-control-stop">
+                <i class="icon-2x icon-white icon-stop"></i>
+              </a>
+            </div>
+            <div class="span3 progress progress-warning progress-striped">
+              <div class="bar" style="width:60%"></div>
+            </div>
+          </div>
+        </div>
+        <!-- End Control Box -->
+
+        <!-- Playlist -->
+        <div class="row">
+            <div id="sortablePlaylist">
+            <!-- <ul class="ui-sortable span6" id="sortablePlaylist"> -->
+              <!-- filled by kibio-player -->
+            <!-- </ul> -->
+            </div>
+        </div>
+        <!-- End Playlist --> 
+
+      </div>
+      <!-- end #control -->
+
+        </div>
+      <!-- end row -->
+    </div>
+    <!-- end 'main' container -->
+    
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="common/js/jquery.js"></script>
+    <script src="common/js/bootstrap-transition.js"></script>
+    <script src="common/js/bootstrap-alert.js"></script>
+    <script src="common/js/bootstrap-modal.js"></script>
+    <script src="common/js/bootstrap-dropdown.js"></script>
+    <script src="common/js/bootstrap-scrollspy.js"></script>
+    <script src="common/js/bootstrap-tab.js"></script>
+    <script src="common/js/bootstrap-tooltip.js"></script>
+    <script src="common/js/bootstrap-popover.js"></script>
+    <script src="common/js/bootstrap-button.js"></script>
+    <script src="common/js/bootstrap-collapse.js"></script>
+    <script src="common/js/bootstrap-carousel.js"></script>
+    <script src="common/js/bootstrap-typeahead.js"></script>
+    <script src="common/js/jquery-ui-1.10.1.custom.js"></script>
+
+    <script src="common/js/jquery.mustache.js"></script>
+
+    <script src="js/ofxHTTPWebSocket.js"></script> <!-- our helper js because it makes life easier -->
+    <script src="js/main.js"></script>             <!-- our main js file because we need it to define our program -->
+
+
+
+    <script id="playlistElementOld" type="text/x-mustache">
+      <li class='span6 ui-state-default playlistItem' id='playlist-{{UUID}}' style="margin:0;padding:0;">
+        <span class='span1'>
+          <span class="badge badge-info fileExtension">
+            {{fileExtension}}
+          </span>
+        </span>
+        <span class='span2'>{{fileName}}</span>
+        <span class='span1'>
+          {{> maskStackedIcon}}
+          {{> warpStackedIcon}} 
+          {{> timeStackedIcon}}
+        </span>
+        <span class='span1'>
+          <a onclick="$('#playlist-{{UUID}}').remove();">
+            <i class="icon-remove icon-large"></i>
+          </a>
+        </span>
+      </li>
+    </script>
+    <script id="playlistElement" type="text/x-mustache">
+      <div class='span6 playlistItem' id='playlist-{{UUID}}' style="margin:0;padding:0;">
+      <div class="row">
+        <div class='span1'>
+          <div class="badge badge-info fileExtension">
+            {{fileExtension}}
+          </div>
+        </div>
+        <div class='span2'>{{fileName}}</div>
+        <div class='span1'>
+          {{> maskStackedIcon}}
+          {{> warpStackedIcon}} 
+          {{> timeStackedIcon}}
+        </div>
+        <div class='offset1 span1'>
+          <a onclick="$('#playlist-{{UUID}}').remove();">
+            <i class="icon-remove icon-large"></i>
+          </a>
+        </div>
+        </div>
+      </div>
+    </script>
+    <script type="text/x-mustache" id="bootstrapPlaylistOld">
+        <tr id="mediaLibrary-{{UUID}}">
+        <td>
+          {{#fileHealth}}
+            {{> fileHealthIndicator}}
+          {{/fileHealth}}
+        </td>
+        
+        <td>
+          {{fileName}}
+        </td>
+        <td>
+          {{type}}
+        </td>
+        <td>
+          {{fileSize}}
+        </td>
+        <td>
+          {{duration}}
+        </td>
+        <td>
+          <a onclick="addToPlaylist({ UUID: '{{UUID}}', fileName: '{{fileName}}', fileSize: '{{fileSize}}', numFrames: '{{numFrames}}', duration: '{{duration}}', fileExtension: '{{fileExtension}}' })">
+            <i class="icon-plus icon-large"></i>
+          </a>
+        </td>
+        </tr>
+    </script>
+    <script type="text/x-mustache" id="bootstrapPlaylist">
+    <tr id="mediaLibrary-{{UUID}}">    
+    <td>
+      {{fileName}}
+    </td>
+    <td>
+      <a onclick="addToPlaylist({ UUID: '{{UUID}}', fileName: '{{fileName}}', fileSize: '{{fileSize}}', numFrames: '{{numFrames}}', duration: '{{duration}}', fileExtension: '{{fileExtension}}' })">
+        <i class="icon-plus icon-large"></i>
+      </a>
+    </td>
+    </tr>
+    </script>
+
+
+    <!-- fileHealthIndicator.mustache -->
+    <script type="text/template" id="fileHealthIndicator">
+      {{#fileOk}}
+        <span class="label label-success">
+          <i class="icon-ok icon" title="Okay"></i>
+        </span>
+      {{/fileOk}}
+      {{#fileNotOk}}
+        <span class="label label-important">
+          <i class="icon-frown icon" title="Not OK"></i>
+        </span>
+      {{/fileNotOk}}
+    </script>
+
+    <!-- customPlaylistIcons.mustache -->
+    <script type="text/template" id="maskStackedIcon">
+      <span class="icon-stack">
+        <i style="color:black;" class="icon-stack-base icon-sign-blank"></i>
+        <i style="color:white;" class="icon-circle"></i>
+      </span>
+    </script>
+
+    <script type="text/template" id="warpStackedIcon">
+      <span class="icon-stack">
+        <i style="color:rgb(209,209,209);" class="icon-stack-base icon-sign-blank"></i>
+        <i style="color:white;" class="icon-fullscreen"></i>
+      </span>
+    </script>
+
+    <script type="text/template" id="timeStackedIcon">
+      <span class="icon-stack">
+        <i style="color:rgb(209,209,209);" class="icon-stack-base icon-sign-blank"></i>
+        <i style="color:white;" class="icon-time"></i>
+      </span>
+    </script>
+    <!-- sortable init js -->
+    <script>
+      $(function() {
+        // media library can stay away from being a sortable
+        $( "#sortablePlaylist" ).sortable({
+          update: function(event, ui) {console.log($( "#sortableMediaLibrary" ).sortable("toArray")); },
+          axis: "y",
+          placeholder: "sortablePlaceholder",
+          forcePlaceholderSize: true,
+          cursor: "move"
+        });
+
+
+        // // hide mediaLibrary onload
+        // $("#mediaLibraryContainer").collapse("hide");
+
+        // // hide 'video' window onload
+        // $("#videoAccordion").collapse("hide");
+
+        //set toggles for accordions when drop-downed and dropd-up
+        $("#navActive").hover(function(){
+          $(this).toggleClass("in");
+
+        },
+        function(){
+          $(this).toggleClass("in");
+        });
+
+      });
+      function toggleChevron(ele){
+            $(ele).toggleClass('icon-chevron-down');
+            $(ele).toggleClass('icon-chevron-up');
+        }
+    </script>
+  
+</body></html>
